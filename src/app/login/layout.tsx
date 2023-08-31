@@ -1,12 +1,11 @@
-import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'MockInter',
-  description: 'Welcome to world of Interviews',
+  title: 'Login-MockInter',
+  description: 'Login to MockInter',
 }
 
-export default function RootLayout({
+export default function LoginLayout({
   children,
 }: {
   children: React.ReactNode

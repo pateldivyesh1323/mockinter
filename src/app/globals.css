@@ -6,3 +6,33 @@
 body {
   background-color: #e7e5e4;
 }
+
+/* Login and Signup form */
+.form-input-field{
+  border: 2px solid #d4d4d8;
+  margin-bottom: 15px;
+  height: 40px;
+  border-radius: 7px;
+  padding-left: 15px;
+  font-size: medium;
+  outline: none;
+}
+.form-input-field::placeholder{
+  color: #666666;
+}
+.form-label{
+  font-size: medium;
+  font-weight: 600;
+}
+.form-with-line:before,
+.form-with-line:after {
+  content: "";
+  display: inline-block;
+  border-top: 1px solid #000;
+  width: 43%;
+  vertical-align: middle;
+  margin: 0 0.5em;
+}
+.form-hide-password-btn{
+  margin-left: 10px;
+}

@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import User from '@/libdatabase/models/UserModel';
 import bcryptjs from 'bcryptjs';
 import { connectDB } from '@/libdatabase/mongodb';
+import { Types } from 'mongoose';
 
 connectDB();
 
@@ -10,7 +11,13 @@ const enum EMAIL_TYPE {
     RESET="RESET"
 }
 
-export const sendEmail = async({email, emailType, userId}:any)=>{
+type EmailParamType = {
+    email:string,
+    emailType:string,
+    userId:Types.ObjectId
+}
+
+export const sendEmail = async({email, emailType, userId}:EmailParamType)=>{
     try {
         const hashedToken = await bcryptjs.hash(userId.toString(), 10);
         if(emailType === EMAIL_TYPE.VERIFY)
@@ -35,7 +42,7 @@ export const sendEmail = async({email, emailType, userId}:any)=>{
         const emailHTML = `<h2>MockInter</h2><p>Click <a href="${process.env.DOMAIN}/${emailType===EMAIL_TYPE.VERIFY?"verifyemail":"resetpassword"}?email=${email}&token=${hashedToken}">here</a> to ${emailType===EMAIL_TYPE.VERIFY?"verify your email":"reset your password"}</p>`
 
         const mailOptions = {
-            from:'pateldivyesh1323@gmail.com',
+            from:'support@mockinter.com',
             to:email,
             subject:emailSubject,
             html:emailHTML
@@ -45,15 +52,13 @@ export const sendEmail = async({email, emailType, userId}:any)=>{
             host: "sandbox.smtp.mailtrap.io",
             port: 2525,
             auth: {
-                user: process.env.MAILTRAP_USERID,
-                pass: process.env.MAILTRAP_PASS
+              user: process.env.MAILTRAP_USERID,
+              pass: process.env.MAILTRAP_PASS
             }
-        });
-
-        const mailResponse = await transport.sendMail(mailOptions);
-        return mailResponse;
-    
+          });
+        await transport.sendMail(mailOptions);
+        return ({success:true,message:"Verification mail sent!"})
     } catch (error:any) {
-        throw new Error(error.message);
+        return ({success:false,message:error.message})
     }
 }

@@ -9,11 +9,11 @@ type ReqType = {
 }
 
 export async function POST(req:NextRequest):Promise<NextResponse>{
-    const {userId, emailType, email}:ReqType = await req.json();
-
+    const { userId, emailType, email }: ReqType = await req.json();
+    
     if(!userId || !emailType || !email)
     {
-        return NextResponse.json({success:false,message:"Please provide all credentials"},{status:400})
+        return NextResponse.json({success:false,message:"Cannot send mail, please provide all details"},{status:400})
     }
     try
     {

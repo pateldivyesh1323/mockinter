@@ -1,8 +1,18 @@
+"use client";
 
-type Props = {}
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function HomePage (props: Props){
-  return (
-    <div>Home</div>
-  )
+type Props = {};
+
+export default function HomePage(props: Props) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      router.push("/login");
+    }
+  }, []);
+
+  return <div>Home</div>;
 }

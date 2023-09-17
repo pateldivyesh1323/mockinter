@@ -5,37 +5,48 @@ import { useRouter } from "next/navigation";
 import { RotatingLines } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 import ReactPasswordChecklist from "react-password-checklist";
+import { Types } from "mongoose";
+
+type DataType = {
+  name: string,
+  email: string,
+  token: string,
+  id: Types.ObjectId,
+  image: string
+}
 
 type ResponseType = {
   success: boolean,
   message: string,
   token?: string,
-  user?: any,
+  data?: DataType
 };
 
 export default function CreateAccount(): React.ReactNode {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmpassword] = useState("");
-  const [isValidPass, setIsValidPass] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmpassword, setConfirmpassword] = useState<string>("");
+  const [isValidPass, setIsValidPass] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
-  const createNewUser = async (): Promise<any> => {
+  const createNewUser = async (): Promise<DataType | undefined> => {
     try {
-      const data: Response = await fetch("/api/user/signup", {
+      const res: Response = await fetch("/api/user/signup", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({ name, email, password }),
       });
-      let { token, message, success, user }: ResponseType = await data.json();
-      if (success && token && user) {
-        localStorage.setItem("token", token);
+      let { message, success, data }: ResponseType = await res.json();
+      if (success && data) {
+        localStorage.setItem("token", data.token);
         toast.success(message);
-        return user;
+        return data;
       } else {
         toast.error(message);
       }

@@ -1,23 +1,60 @@
 "use client";
 import "./styles.css";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import Link from "next/link";
+import { useRouter } from "next/navigation"
+import toast, { Toaster } from "react-hot-toast";
+import { RotatingLines } from "react-loader-spinner";
 
-const handleLoginFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-};
 
 export default function LoginPage(): React.ReactNode {
+  const router = useRouter()
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [hidePassword, setHidePassword] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleLoginFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error("Please provide all credentials!")
+      return;
+    }
+    setLoading(true);
+    let res = await fetch("/api/user/login", {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+    let data = await res.json();
+    console.log(data);
+    if (!data.success) {
+      toast.error(data.message);
+      setLoading(false);
+      return;
+    }
+    localStorage.setItem("token", data.token);
+    toast.success(data.message);
+    router.push("/home")
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/home");
+    }
+  }, [])
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <main className="border-2 border-zinc-300 w-[500px] h-[600px] rounded-xl bg-white py-5 px-10">
+      <Toaster />
+      <main className="border-2 border-zinc-300 sm:w-[500px] w-[350px] min-h-[600px] rounded-xl bg-white py-5 sm:px-10 px-4">
         <div className="font-dmsans text-center text-2xl font-bold">
           MockInter
         </div>
@@ -33,6 +70,8 @@ export default function LoginPage(): React.ReactNode {
               id="email"
               placeholder="Enter your Email"
               className="h-full w-[90%] outline-none"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value) }}
             />
           </div>
           <label htmlFor="password" className="form-label">
@@ -45,9 +84,13 @@ export default function LoginPage(): React.ReactNode {
               id="password"
               placeholder="Enter your Password"
               className="h-full w-[90%] outline-none"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value) }}
             />
             <button
-              onClick={() => {
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
                 setHidePassword(!hidePassword);
               }}
               className="form-hide-password-btn"
@@ -61,9 +104,20 @@ export default function LoginPage(): React.ReactNode {
           </div>
           <button
             type="submit"
-            className="bg-black rounded-md text-white h-10 mb-2"
+            className="bg-black rounded-md text-white h-10 mb-2 flex items-center justify-center"
+            disabled={loading}
           >
-            Login
+            {loading ? (
+              <RotatingLines
+                strokeColor="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="35"
+                visible={true}
+              />
+            ) : (
+              "Login"
+            )}
           </button>
           <div className="text-sm mb-5">
             <Link href="/create-account">New to MockInter? Create Account</Link>

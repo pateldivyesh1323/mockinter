@@ -27,8 +27,7 @@ export async function POST(req: NextRequest) {
         {
           success: true,
           message: "Created new account successfully!",
-          token: generateToken(_id),
-          user: { id: _id, name, email, image },
+          data: { id: _id, name, email, image, token: generateToken(_id)},
         },
         { status: 200 }
       );

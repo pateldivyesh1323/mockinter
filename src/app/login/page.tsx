@@ -6,9 +6,8 @@ import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import Link from "next/link";
 import { useRouter } from "next/navigation"
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
-
 
 export default function LoginPage(): React.ReactNode {
   const router = useRouter()
@@ -20,41 +19,40 @@ export default function LoginPage(): React.ReactNode {
 
   const handleLoginFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email || !password) {
-      toast.error("Please provide all credentials!")
-      return;
-    }
-    setLoading(true);
-    let res = await fetch("/api/user/login", {
-      method: "POST",
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    })
-    let data = await res.json();
-    console.log(data);
-    if (!data.success) {
-      toast.error(data.message);
-      setLoading(false);
-      return;
-    }
-    localStorage.setItem("token", data.token);
-    toast.success(data.message);
-    router.push("/home")
-    setLoading(false);
-  };
+    try {
+      if (!email || !password) {
+        toast.error("Please provide all credentials!")
+        return;
+      }
+      setLoading(true);
+      let res = await fetch("/api/user/login", {
+        method: "POST",
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      router.push("/home");
+      let data = await res.json();
+
+      if (!data.success) {
+        toast.error(data.message);
+        return;
+      }
+      toast.success(data.message);
+      router.push("/home")
     }
-  }, [])
+    catch (error: any) {
+      toast.error(error.message);
+    }
+    finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <Toaster />
-      <main className="border-2 border-zinc-300 sm:w-[500px] w-[350px] min-h-[600px] rounded-xl bg-white py-5 sm:px-10 px-4">
+      <main className="border-2 border-zinc-300 sm:w-[500px] w-[350px] min-h-[500px] rounded-xl bg-white py-5 sm:px-10 px-4">
         <div className="font-dmsans text-center text-2xl font-bold">
           MockInter
         </div>

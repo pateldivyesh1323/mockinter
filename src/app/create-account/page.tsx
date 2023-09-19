@@ -3,14 +3,13 @@ import Link from "next/link";
 import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RotatingLines } from "react-loader-spinner";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import ReactPasswordChecklist from "react-password-checklist";
 import { Types } from "mongoose";
 
 type DataType = {
   name: string,
   email: string,
-  token: string,
   id: Types.ObjectId,
   image: string
 }
@@ -18,7 +17,6 @@ type DataType = {
 type ResponseType = {
   success: boolean,
   message: string,
-  token?: string,
   data?: DataType
 };
 
@@ -44,7 +42,6 @@ export default function CreateAccount(): React.ReactNode {
       });
       let { message, success, data }: ResponseType = await res.json();
       if (success && data) {
-        localStorage.setItem("token", data.token);
         toast.success(message);
         return data;
       } else {
@@ -60,49 +57,46 @@ export default function CreateAccount(): React.ReactNode {
     e: FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    if (!name || !email || !password || !confirmpassword) {
-      toast.error("Please provide all the credentials!");
-      return;
-    }
-    if (!isValidPass) {
-      toast.error("Password must fulfill all requirements!")
-      return;
-    }
-    setLoading(true);
-    let userdata = await createNewUser();
-    if (!userdata) {
-      setLoading(false);
-      return;
-    }
-    let { id, email: emailId } = userdata;
-    let emaildata = await fetch("/api/user/sendverificationmail", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ userId: id, email: emailId, emailType: "VERIFY" }),
-    });
-    setLoading(false);
-    let emailres = await emaildata.json();
-    if (emailres.success) {
-      toast.success(emailres.message);
-    } else {
-      toast.error(emailres.message);
-    }
-    if (localStorage.getItem("token")) {
+    try {
+      setLoading(true);
+      if (!name || !email || !password || !confirmpassword) {
+        toast.error("Please provide all the credentials!");
+        return;
+      }
+      if (!isValidPass) {
+        toast.error("Password must fulfill all requirements!")
+        return;
+      }
+      let userdata = await createNewUser();
+      if (!userdata) {
+        return;
+      }
+      let { id, email: emailId } = userdata;
+      let emaildata = await fetch("/api/user/sendverificationmail", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ userId: id, email: emailId, emailType: "VERIFY" }),
+      });
+      let emailres = await emaildata.json();
+      if (emailres.success) {
+        toast.success(emailres.message);
+      } else {
+        toast.error(emailres.message);
+      }
       router.push("/home");
+    }
+    catch (error: any) {
+      toast.error("Error : ", error.message)
+    }
+    finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      router.push("/home");
-    }
-  }, []);
-
   return (
     <div className="flex items-center justify-center h-screen">
-      <Toaster />
       <main className="border-2 border-zinc-300 sm:w-[500px] w-[350px] min-h-[600px] rounded-xl bg-white py-5 sm:px-10 px-4">
         <div className="font-dmsans text-center text-2xl font-bold">
           MockInter

@@ -1,23 +1,33 @@
-"use client";
-
-import { useEffect } from "react";
+'use client'
 import { useRouter } from "next/navigation";
+import React from "react";
+import toast from "react-hot-toast";
 
-type Props = {};
-
-export default function HomePage(props: Props) {
+export default function HomePage() {
   const router = useRouter();
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    router.push("/login");
+  const logout = async () => {
+    try {
+      await fetch("/api/user/logout");
+      toast.success("Logged out successfully");
+      router.push("/login");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   }
 
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      router.push("/login");
-    }
-  }, []);
+  const getUserData = async () => {
+    const res = await fetch("/api/user/profile");
+    const data = await res.json();
+    console.log(data);
+  }
 
-  return <div><button onClick={logout}>Logout</button></div>;
+  return (
+    <>
+      <div>
+        <button type="button" onClick={logout}>Logout</button>
+        <button type="button" onClick={getUserData}>Get Data</button>
+      </div>
+    </>
+  )
 }

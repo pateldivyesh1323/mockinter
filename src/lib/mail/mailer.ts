@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
-import User from "@/libdatabase/models/UserModel";
+import User from "../database/models/UserModel";
 import bcryptjs from "bcryptjs";
-import { connectDB } from "@/libdatabase/mongodb";
+import { connectDB } from "../database/mongodb";
 import { Types } from "mongoose";
 
 connectDB();
@@ -42,15 +42,12 @@ export const sendEmail = async ({
         ? "Verify your email"
         : "Reset your Password";
 
-    const emailHTML = `<h2>MockInter</h2><p>Click <a href="${
-      process.env.DOMAIN
-    }/${
-      emailType === EMAIL_TYPE.VERIFY ? "verifyemail" : "resetpassword"
-    }?email=${email}&token=${hashedToken}">here</a> to ${
-      emailType === EMAIL_TYPE.VERIFY
+    const emailHTML = `<h2>MockInter</h2><p>Click <a href="${process.env.DOMAIN
+      }/${emailType === EMAIL_TYPE.VERIFY ? "verifyemail" : "resetpassword"
+      }?email=${email}&token=${hashedToken}">here</a> to ${emailType === EMAIL_TYPE.VERIFY
         ? "verify your email"
         : "reset your password"
-    }</p>`;
+      }</p>`;
 
     const mailOptions = {
       from: "support@mockinter.com",

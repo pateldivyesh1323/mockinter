@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "./components/Navbar";
+import NavbarOne from "./components/NavbarOne";
 
 export default function Home(): React.ReactNode {
   return (
     <>
-      <Navbar />
+      <NavbarOne />
       <main className="flex items-center justify-center md:p-10 p-4 font-dmsans flex-col h-[80vh]">
         <div className="mb-5 font-extrabold xl:text-8xl lg:text-6xl md:text-5xl text-3xl text-center">
           Platform for{" "}

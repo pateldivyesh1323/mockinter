@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import User from "@/libdatabase/models/UserModel";
-import { connectDB } from "@/libdatabase/mongodb";
-import generateToken from "@/libhelpers/generateToken";
+import User from "@/srclib/database/models/UserModel";
+import { connectDB } from "@/srclib/database/mongodb";
+import generateToken from "@/srclib/helpers/generateToken";
 
 connectDB();
 
@@ -23,14 +23,21 @@ export async function POST(req: NextRequest) {
     let user = await User.create({ name, password, email });
     if (user) {
       let { _id, name, email, image } = user;
-      return NextResponse.json(
+      const response = NextResponse.json(
         {
           success: true,
           message: "Created new account successfully!",
-          data: { id: _id, name, email, image, token: generateToken(_id)},
+          data: { id: _id, name, email, image },
         },
         { status: 200 }
       );
+
+      response.cookies.set("token", generateToken(_id),
+        { httpOnly: true }
+      )
+
+      return response;
+
     } else {
       return NextResponse.json(
         { success: false, message: "Something went wrong!" },

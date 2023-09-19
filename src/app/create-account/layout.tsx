@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 
+type PropsType = {
+  children: React.ReactNode
+}
+
 export const metadata: Metadata = {
   title: "Create Account-MockInter",
   description: "Create new account in MockInter",
@@ -7,12 +11,9 @@ export const metadata: Metadata = {
 
 export default function LoginLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: PropsType
+) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <main>{children}</main>
   );
 }

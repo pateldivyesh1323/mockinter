@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-export default function Navbar() {
+export default function NavbarOne() {
   return (
-    <section className="font-dmsans font-semibold md:px-20 md:py-10 sm:px-10 sm:py-5 px-4 pt-4">
+    <nav className="font-dmsans font-semibold md:px-20 md:py-10 sm:px-10 sm:py-5 px-4 pt-4">
       <span className="sm:text-3xl text-xl">
         <Link href="/">MockInter</Link>
       </span>
@@ -18,6 +18,6 @@ export default function Navbar() {
           </span>
         </Link>
       </span>
-    </section>
+    </nav>
   );
 }

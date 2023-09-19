@@ -1,6 +1,6 @@
-import { connectDB } from "@/libdatabase/mongodb";
+import { connectDB } from "@/srclib/database/mongodb";
 import { NextRequest, NextResponse } from "next/server";
-import User from "@/libdatabase/models/UserModel";
+import User from "@/srclib/database/models/UserModel";
 
 connectDB();
 

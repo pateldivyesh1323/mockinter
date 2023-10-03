@@ -1,5 +1,5 @@
-import Interview from "@/libdatabase/models/InterviewModel";
-import { connectDB } from "@/libdatabase/mongodb";
+import Interview from "@/srclib/database/models/InterviewModel";
+import { connectDB } from "@/srclib/database/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 connectDB();

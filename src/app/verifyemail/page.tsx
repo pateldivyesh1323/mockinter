@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react';
-import { RotatingLines } from 'react-loader-spinner';
+import LoadingButton from '@mui/lab/LoadingButton';
+import toast from 'react-hot-toast';
 
 type PropsType = {
     searchParams: { [key: string]: string | string[] | undefined }
@@ -17,8 +18,8 @@ export default function VerifyEmailPage({
 
 
     const verifyEmailHandler = async () => {
-        setLoading(true);
         try {
+            setLoading(true);
             const verifyRes = await fetch('/api/user/verifyemail', {
                 method: 'POST',
                 headers: {
@@ -26,36 +27,29 @@ export default function VerifyEmailPage({
                 },
                 body: JSON.stringify({ token })
             });
-
-            if (verifyRes.ok) setVerified(true)
+            const data = await verifyRes.json();
+            if (data.success) {
+                setVerified(true);
+                toast.success(data.message);
+            }
+            else {
+                toast.error(data.message);
+            }
         }
-        catch (error) {
-            console.log(error);
+        catch (error: any) {
+            toast.error(error.message)
         }
-        setLoading(false);
+        finally {
+            setLoading(false);
+        }
     }
 
     return (
         <main className='h-screen flex justify-center items-center flex-col'>
             <div className='text-xl mb-4 font-semibold'>{email}</div>
-            <button
-                className="text-white bg-black rounded-md w-72 h-10 text-lg flex items-center justify-center"
-                onClick={verifyEmailHandler}
-                disabled={loading || verified}
-            >
-                {
-                    loading ?
-                        <RotatingLines
-                            strokeColor="grey"
-                            strokeWidth="5"
-                            animationDuration="0.75"
-                            width="35"
-                            visible={true}
-                        />
-                        :
-                        !verified ? "Verify your Email Address" : "✅ Email address verified!"
-                }
-            </button>
+            <LoadingButton loading={loading} variant="contained" onClick={verifyEmailHandler} className="bg-black hover:bg-gray-800  ">
+                {verified ? "Verified ✅" : "Click here to Verify"}
+            </LoadingButton>
         </main>
     )
 }

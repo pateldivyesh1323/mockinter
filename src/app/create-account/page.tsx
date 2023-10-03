@@ -2,10 +2,10 @@
 import Link from "next/link";
 import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { RotatingLines } from "react-loader-spinner";
 import toast from "react-hot-toast";
 import ReactPasswordChecklist from "react-password-checklist";
 import { Types } from "mongoose";
+import { LoadingButton } from "@mui/lab";
 
 type DataType = {
   name: string,
@@ -77,7 +77,7 @@ export default function CreateAccount(): React.ReactNode {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ userId: id, email: emailId, emailType: "VERIFY" }),
+        body: JSON.stringify({ userId: id, email: emailId }),
       });
       let emailres = await emaildata.json();
       if (emailres.success) {
@@ -181,23 +181,9 @@ export default function CreateAccount(): React.ReactNode {
               onChange={(isValid) => { setIsValidPass(isValid); }}
             />
           </div>
-          <button
-            type="submit"
-            className="bg-black rounded-md text-white h-10 mb-2 flex items-center justify-center"
-            disabled={loading}
-          >
-            {loading ? (
-              <RotatingLines
-                strokeColor="grey"
-                strokeWidth="5"
-                animationDuration="0.75"
-                width="35"
-                visible={true}
-              />
-            ) : (
-              "Create account"
-            )}
-          </button>
+          <LoadingButton loading={loading} variant="contained" type="submit" className="bg-black hover:bg-gray-800  ">
+            Create Account
+          </LoadingButton>
         </form>
         <div className="text-sm mb-5">
           <Link href="/login">Already have an account? Login</Link>

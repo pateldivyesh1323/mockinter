@@ -12,18 +12,19 @@ export async function POST(req: NextRequest) {
       verifyToken: token,
       verifyTokenExpiry: { $gt: Date.now() },
     });
+
     if (!user) {
-      return NextResponse.json({ error: "Invalid Token" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Invalid Token" }, { status: 401 });
     }
     user.isVerified = true;
     user.verifyToken = undefined;
     user.verifyTokenExpiry = undefined;
     await user.save();
     return NextResponse.json({
-      message: "Email verified Successfully",
       success: true,
-    });
+      message: "Email verified Successfully",
+    }, { status: 201 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }
 }

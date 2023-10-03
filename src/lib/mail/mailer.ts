@@ -65,7 +65,7 @@ export const sendEmail = async ({
       },
     });
     await transport.sendMail(mailOptions);
-    return { success: true, message: "Verification mail sent!" };
+    return { success: true, message: emailType === EMAIL_TYPE.VERIFY ? "Verification mail sent!" : "Reset-Password mail sent!" };
   } catch (error: any) {
     return { success: false, message: error.message };
   }

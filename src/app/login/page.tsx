@@ -1,13 +1,10 @@
 "use client";
 import "./styles.css";
-import { FormEvent, useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { FormEvent, useState } from "react";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Link from "next/link";
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast";
-import { RotatingLines } from "react-loader-spinner";
 
 export default function LoginPage(): React.ReactNode {
   const router = useRouter()
@@ -75,7 +72,7 @@ export default function LoginPage(): React.ReactNode {
           <label htmlFor="password" className="form-label">
             Password
           </label>
-          <div className="form-input-field">
+          <div className="!mb-0 form-input-field">
             <input
               type={hidePassword ? "password" : "text"}
               name="password"
@@ -91,32 +88,25 @@ export default function LoginPage(): React.ReactNode {
                 e.preventDefault();
                 setHidePassword(!hidePassword);
               }}
-              className="form-hide-password-btn"
+              className="relative top-[7px] right-[4px]"
             >
               {hidePassword ? (
-                <FontAwesomeIcon icon={faEye} />
+                <span className="material-symbols-outlined">
+                  visibility
+                </span>
               ) : (
-                <FontAwesomeIcon icon={faEyeSlash} />
+                <span className="material-symbols-outlined">
+                  visibility_off
+                </span>
               )}
             </button>
           </div>
-          <button
-            type="submit"
-            className="bg-black rounded-md text-white h-10 mb-2 flex items-center justify-center"
-            disabled={loading}
-          >
-            {loading ? (
-              <RotatingLines
-                strokeColor="grey"
-                strokeWidth="5"
-                animationDuration="0.75"
-                width="35"
-                visible={true}
-              />
-            ) : (
-              "Login"
-            )}
-          </button>
+          <div className="text-sm mb-5">
+            <Link href="/forgot-password">Forgot Password?</Link>
+          </div>
+          <LoadingButton loading={loading} variant="contained" type="submit" className="bg-black hover:bg-gray-800  ">
+            Login
+          </LoadingButton>
           <div className="text-sm mb-5">
             <Link href="/create-account">New to MockInter? Create Account</Link>
           </div>

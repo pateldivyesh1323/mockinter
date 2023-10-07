@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         { status: 200 }
       );
 
-      response.cookies.set("token", generateToken(_id),
+      response.cookies.set("token", await generateToken(_id),
         { httpOnly: true }
       )
 

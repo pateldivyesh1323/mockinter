@@ -8,7 +8,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         let body = await req.json();
         const { token, password } = body;
-        console.log(token);
         const user = await User.findOne({
             forgotPasswordToken: token,
             forgotPasswordTokenExpiry: { $gt: Date.now() }

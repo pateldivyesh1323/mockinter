@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import type { Metadata } from "next";
+import UserProvider from "./Context/userProvider";
 
 export const metadata: Metadata = {
   title: "MockInter",
@@ -18,8 +19,10 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
       </head>
       <body>
-        <Toaster />
-        {children}
+        <UserProvider>
+          <Toaster />
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

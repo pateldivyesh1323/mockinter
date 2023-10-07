@@ -30,7 +30,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           status: 201
         })
 
-      response.cookies.set("token", generateToken(_id),
+      response.cookies.set("token", await generateToken(_id),
         { httpOnly: true }
       )
 
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ success: false, message: "Credentials does not match!" }, { status: 400 })
 
   } catch (error) {
-
+    console.log(error);
     return NextResponse.json({ success: false, message: "Internal server error" }, { status: 500 })
 
   }

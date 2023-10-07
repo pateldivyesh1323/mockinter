@@ -11,13 +11,30 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+
 
 export default function AccountMenu() {
+    const router = useRouter();
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
+    const logout = async () => {
+        try {
+            await fetch("/api/user/logout");
+            toast.success("Logged out successfully");
+            router.push("/login");
+        } catch (error: any) {
+            toast.error(error.message);
+        }
+    }
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -33,7 +50,7 @@ export default function AccountMenu() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 40, height: 40 }} src="">PD</Avatar>
+                        <Avatar sx={{ width: 40, height: 40 }} src=""></Avatar>
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -91,7 +108,7 @@ export default function AccountMenu() {
                     </ListItemIcon>
                     Settings
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={logout}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>

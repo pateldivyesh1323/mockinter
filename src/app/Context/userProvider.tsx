@@ -1,7 +1,6 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 const UserContext = createContext<any>({});
 
@@ -16,11 +15,8 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 if (data.success) {
                     setUser(data);
                 }
-                else {
-                    toast.error(data.message)
-                }
             } catch (error: any) {
-                toast.error(error.message)
+                console.log(error.message)
             }
         }
         getUser();

@@ -7,7 +7,8 @@ export type InterviewDataType = {
     description: string,
     interviewer: mongoose.Schema.Types.ObjectId,
     status: string,
-    interviewee?: string
+    interviewee?: string,
+    createdAt: Date
 }
 
 type PropsType = {
@@ -15,50 +16,22 @@ type PropsType = {
     data: InterviewDataType[]
 }
 
-const interviews: InterviewDataType[] = [
-    {
-        title: "This is Card title",
-        description: "This is card description",
-        status: "upcoming",
-        interviewer: Object("65080e025e5b276c3e6e0dd2")
-    },
-    {
-        title: "This is Card title",
-        description: "This is card description",
-        status: "upcoming",
-        interviewer: Object("65080e025e5b276c3e6e0dd2")
-    }, {
-        title: "This is Card title",
-        description: "This is card description",
-        status: "upcoming",
-        interviewer: Object("65080e025e5b276c3e6e0dd2")
-    }, {
-        title: "This is Card title",
-        description: "This is card description",
-        status: "upcoming",
-        interviewer: Object("65080e025e5b276c3e6e0dd2")
-    }, {
-        title: "This is Card title",
-        description: "This is card description",
-        status: "upcoming",
-        interviewer: Object("65080e025e5b276c3e6e0dd2")
-    }, {
-        title: "This is Card title",
-        description: "This is card description",
-        status: "upcoming",
-        interviewer: Object("65080e025e5b276c3e6e0dd2")
-    },
-]
-
 export default function InterviewList({ title, data }: PropsType): React.ReactNode {
+
     return (
-        <section className="flex items-center justify-center flex-col">
-            <div className="align-left text-5xl font-dmsans font-bold">{title}</div>
-            {interviews.map((interview, index) => {
-                return (
-                    <InterviewCards key={index} title={interview.title} description={interview.description} interviewer={interview.interviewer} interviewee={interview?.interviewee} status={interview.status} />
-                )
-            })}
+        <section className="w-[80%] m-auto">
+            <div className="font-dmsans font-bold text-2xl">{title}</div>
+            <hr className="border-black mb-6" />
+            {data.length === 0 ?
+                (<div>No Data Found!</div>) :
+                (<div>
+                    {data.map((data, index) => {
+                        return (
+                            <InterviewCards key={index} data={data} />
+                        )
+                    })}
+                </div>)
+            }
         </section>
     )
 }

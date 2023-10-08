@@ -5,6 +5,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Link from "next/link";
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast";
+import { common } from "@mui/material/colors";
 
 export default function LoginPage(): React.ReactNode {
   const router = useRouter()
@@ -104,7 +105,7 @@ export default function LoginPage(): React.ReactNode {
           <div className="text-sm mb-5">
             <Link href="/forgot-password">Forgot Password?</Link>
           </div>
-          <LoadingButton loading={loading} variant="contained" type="submit" className="bg-black hover:bg-gray-800  ">
+          <LoadingButton loading={loading} variant="contained" type="submit" className="bg-black hover:bg-gray-800">
             Login
           </LoadingButton>
           <div className="text-sm mb-5">
@@ -112,6 +113,6 @@ export default function LoginPage(): React.ReactNode {
           </div>
         </form>
       </main>
-    </div>
+    </div >
   );
 }

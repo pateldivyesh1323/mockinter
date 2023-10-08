@@ -1,13 +1,20 @@
+'use client'
+import { UserState } from "../Context/userProvider";
 import AccountMenu from "./AccountMenu";
 import Link from "next/link";
 
 export default function NavbarTwo() {
+    const user = UserState();
+
     return (
-        <div className="font-dmsans font-semibold md:px-10 md:py-2 px-4 pt-4 bg-white flex items-center flex-row justify-between mb-6">
+        <div className="font-dmsans font-semibold md:px-10 md:py-2 px-4 pt-4 bg-white flex items-center flex-row justify-between mb-6 sticky top-0 z-10">
             <span className="sm:text-3xl text-xl">
                 <Link href="/home">MockInter</Link>
             </span>
-            <AccountMenu />
+            <div className="flex items-center">
+                <AccountMenu />
+                <span className="text-lg">{user ? user.data.name : ""}</span>
+            </div>
         </div >
     )
 }

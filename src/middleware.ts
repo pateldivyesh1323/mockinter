@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { getDataFromToken } from './lib/helpers/getDataFromToken';
 
 const PublicPath = ["/", "/login", "/create-account", "forgot-passowrd", "/resetpassword", "/verifyemail"];
-const ApiPath = ["/api/user/profile"]
+const ApiPath = ["/api/user/profile", "/api/interviews/getall"]
 
 export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname
@@ -39,6 +39,7 @@ export const config = {
         '/login',
         '/resetpassword',
         '/verifyemail',
-        '/api/user/profile'
+        '/api/user/profile',
+        '/api/interviews/getall'
     ],
 }

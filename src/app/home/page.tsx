@@ -1,6 +1,5 @@
 'use client'
-import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import InterviewList from "../components/InterviewList";
 import { UserState } from "../Context/userProvider";
@@ -8,11 +7,26 @@ import { UserState } from "../Context/userProvider";
 
 export default function HomePage() {
   const user = UserState();
+  const [interviews, setInterviews] = useState([]);
+
+  useEffect(() => {
+    async function getAll() {
+      const res = await fetch("/api/interviews/getall");
+      const data = await res.json();
+      if (data.success) {
+        setInterviews(data.data);
+      }
+      else {
+        toast.error(data.message);
+      }
+    }
+    getAll()
+  }, [])
 
   return (
     <>
       <main>
-        <InterviewList title={"Available Interviews"} data={[]} />
+        <InterviewList title={"Available Interviews"} data={interviews} />
       </main>
     </>
   )

@@ -6,7 +6,8 @@ connectDB();
 
 export async function GET(req: NextRequest) {
     try {
-        const userId = req.headers.get("id");
+        let userId = req.headers.get("searchid");
+        if (!userId) userId = req.headers.get("id");
         const userData = await User.findById(userId).select(["_id", "name", "image", "email", "isVerified"]);
         return NextResponse.json({ success: true, message: "Fetched Profile Successfully", data: userData }, { status: 201 })
     } catch (error: any) {

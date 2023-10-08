@@ -13,10 +13,13 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { UserState } from '../Context/userProvider';
 
 
 export default function AccountMenu() {
     const router = useRouter();
+
+    const user = UserState();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -50,7 +53,7 @@ export default function AccountMenu() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 40, height: 40 }} src=""></Avatar>
+                        <Avatar sx={{ width: 40, height: 40, backgroundColor: "black" }} src={user?.data.image}>{user?.data.name.split(" ").map((name: string) => name[0])}</Avatar>
                     </IconButton>
                 </Tooltip>
             </Box>

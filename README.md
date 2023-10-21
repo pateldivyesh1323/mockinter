@@ -1,6 +1,7 @@
-## Introduction
+## Welcome to Mockinter
 ![image](https://github.com/pateldivyesh1323/mockinter/assets/109150688/97c6dbe9-e787-4aaf-9b3e-8f44ef4713b8)
 
+- Mockinter is made with Next.js, TailwindCSS and MongoDB.
 
 ## Setting up MockInter locally
 

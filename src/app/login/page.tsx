@@ -5,7 +5,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Link from "next/link";
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast";
-import { common } from "@mui/material/colors";
 
 export default function LoginPage(): React.ReactNode {
   const router = useRouter()

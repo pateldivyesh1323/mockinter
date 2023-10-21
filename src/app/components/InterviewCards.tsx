@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { InterviewDataType } from "./InterviewList";
 import toast from "react-hot-toast";
 import { Avatar } from "@mui/material";
+import Link from "next/link";
 
 export type interviewerType = {
     name: string,
-    image: string
+    image: string,
 }
 
 export default function InterviewCards({ data }: { data: InterviewDataType }): React.ReactNode {
@@ -41,7 +42,9 @@ export default function InterviewCards({ data }: { data: InterviewDataType }): R
             <div className="text-neutral-700 mb-2">{data.description}</div>
             <div className="flex justify-between pr-4">
                 <div>status: <span className="text-lime-800">{data.status}</span></div>
-                <button>More details</button>
+                <Link href={`/interview/${data._id}`}>
+                    <button className="bg-black text-white p-2 rounded hover:bg-neutral-700 transition">More details</button>
+                </Link>
             </div>
         </div >
     )

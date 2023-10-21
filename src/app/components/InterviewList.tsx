@@ -1,6 +1,6 @@
 import React from "react";
 import InterviewCards from "./InterviewCards";
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export type InterviewDataType = {
     title: string,
@@ -8,7 +8,8 @@ export type InterviewDataType = {
     interviewer: mongoose.Schema.Types.ObjectId,
     status: string,
     interviewee?: string,
-    createdAt: Date
+    createdAt: Date,
+    _id: ObjectId
 }
 
 type PropsType = {

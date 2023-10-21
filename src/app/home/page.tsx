@@ -2,11 +2,9 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import InterviewList from "../components/InterviewList";
-import { UserState } from "../Context/userProvider";
-
 
 export default function HomePage() {
-  const user = UserState();
+
   const [interviews, setInterviews] = useState([]);
 
   useEffect(() => {

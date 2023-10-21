@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Introduction
+![image](https://github.com/pateldivyesh1323/mockinter/assets/109150688/97c6dbe9-e787-4aaf-9b3e-8f44ef4713b8)
 
-## Getting Started
 
-First, run the development server:
+## Setting up MockInter locally
 
+- Open your terminal and clone the repository :
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone "https://github.com/pateldivyesh1323/mockinter"
 ```
 
+- cd into mockinter
+```bash
+cd mockinter
+```
+
+- Install dependencies with : 
+```bash
+npm install
+```
+
+- Create .env and copy the content of .env.example or run the following command:
+```bash
+cp .env .env.example
+```
+Make sure to add all required enviroment variables in .env
+
+- Run the development server with :
+```bash
+npm run dev
+```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Build the server with :
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### The app is still under development, you can see the deployed version - [mockinter.vercel.app](https://mockinter.vercel.app)

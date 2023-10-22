@@ -14,6 +14,7 @@ import Logout from '@mui/icons-material/Logout';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { UserState } from '../Context/userProvider';
+import Link from 'next/link';
 
 
 export default function AccountMenu() {
@@ -92,19 +93,12 @@ export default function AccountMenu() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> Profile
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <Avatar /> My account
-                </MenuItem>
+                <Link href={user !== undefined ? `/profile/${user?.data._id}` : "/home"}>
+                    <MenuItem onClick={handleClose}>
+                        <Avatar sx={{ width: 40, height: 40, backgroundColor: "black" }} src={user?.data.image} >{user?.data.name.split(" ").map((name: string) => name[0])}</Avatar> My Profile
+                    </MenuItem>
+                </Link>
                 <Divider />
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <PersonAdd fontSize="small" />
-                    </ListItemIcon>
-                    Add another account
-                </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <Settings fontSize="small" />

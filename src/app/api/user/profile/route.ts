@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     try {
         let userId = req.nextUrl.searchParams.get("searchid");
         if (userId === null) userId = req.headers.get("id");
-        const userData = await User.findById(userId).select(["_id", "name", "image", "email", "isVerified"]);
+        const userData = await User.findById(userId).select(["_id", "name", "image", "email", "isVerified", "about", "age", "profession", "location"]);
         if (userData !== null) {
             return NextResponse.json({ success: true, message: "Fetched Profile Successfully", data: userData }, { status: 201 })
         }

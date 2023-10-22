@@ -23,8 +23,8 @@ const userSchema = new Schema(
       required: true,
       validate: [validator.isStrongPassword, "Enter a strong Passsword"],
     },
-    birthdate: {
-      type: Date,
+    age: {
+      type: Number,
     },
     about: {
       type: String,

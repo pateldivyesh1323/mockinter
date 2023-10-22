@@ -3,10 +3,12 @@ import { InterviewDataType } from "./InterviewList";
 import toast from "react-hot-toast";
 import { Avatar } from "@mui/material";
 import Link from "next/link";
+import { ObjectId } from "mongoose";
 
 export type interviewerType = {
     name: string,
     image: string,
+    _id: ObjectId
 }
 
 export default function InterviewCards({ data }: { data: InterviewDataType }): React.ReactNode {
@@ -31,13 +33,15 @@ export default function InterviewCards({ data }: { data: InterviewDataType }): R
 
     return (
         <div className="bg-white text-black mb-4 p-3">
-            <div className="flex items-center mb-2">
-                <Avatar src={interviewer?.image} className="mr-3"></Avatar>
-                <div className="flex flex-col">
-                    <span className="font-bold text-md text-neutral-700">{interviewer?.name}</span>
-                    <span className="text-xs text-neutral-600">Created on: {date}</span>
+            <Link href={`/profile/${interviewer?._id}`}>
+                <div className="flex items-center mb-2">
+                    <Avatar src={interviewer?.image} className="mr-3"></Avatar>
+                    <div className="flex flex-col">
+                        <span className="font-bold text-md text-neutral-700">{interviewer?.name}</span>
+                        <span className="text-xs text-neutral-600">Created on: {date}</span>
+                    </div>
                 </div>
-            </div>
+            </Link>
             <div className="text-2xl font-semibold">{data.title}</div>
             <div className="text-neutral-700 mb-2">{data.description}</div>
             <div className="flex justify-between pr-4">

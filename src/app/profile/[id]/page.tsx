@@ -32,9 +32,7 @@ export default function UserPage({ params }: UserPageParams) {
         async function fetchUserData() {
             const res = await fetch(`/api/user/profile?searchid=${params.id}`);
             const data = await res.json();
-            console.log(data);
             if (data.success) {
-                console.log(data.data);
                 setUserDetails(data.data);
             }
             else {

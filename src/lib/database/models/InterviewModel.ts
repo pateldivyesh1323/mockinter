@@ -21,6 +21,10 @@ const interviewModel = new Schema(
     status: {
       type: String,
       default: "upcoming" // Three states of interviews : upcoming, booked, completed
+    },
+    price: {
+      type: Number,
+      required: true
     }
   },
   {

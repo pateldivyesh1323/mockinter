@@ -98,13 +98,14 @@ export default function AccountMenu() {
                         <Avatar sx={{ width: 40, height: 40, backgroundColor: "black" }} src={user?.data.image} >{user?.data.name.split(" ").map((name: string) => name[0])}</Avatar> My Profile
                     </MenuItem>
                 </Link>
-                <Divider />
-                <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                        <Settings fontSize="small" />
-                    </ListItemIcon>
-                    Settings
-                </MenuItem>
+                <Link href="/settings">
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                            <Settings fontSize="small" />
+                        </ListItemIcon>
+                        Settings
+                    </MenuItem>
+                </Link>
                 <MenuItem onClick={logout}>
                     <ListItemIcon>
                         <Logout fontSize="small" />

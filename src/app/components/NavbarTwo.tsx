@@ -13,7 +13,7 @@ export default function NavbarTwo() {
             </span>
             <div className="flex items-center">
                 <AccountMenu />
-                <span className="text-lg">{user ? user.data.name : ""}</span>
+                <span className="text-lg">{user ? user.name : ""}</span>
             </div>
         </div >
     )

@@ -1,30 +1,17 @@
 'use client';
 import NavbarTwo from '@/srcapp/components/NavbarTwo';
 import { Avatar } from '@mui/material';
-import { ObjectId } from 'mongoose';
 import { notFound } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import './styles.css'
 
-type UserPageParams = {
+type PropsType = {
     params: {
         id: string
     }
 }
 
-type UserDetailsType = {
-    email: string,
-    image: string,
-    isVerified: boolean,
-    name: string,
-    _id: ObjectId,
-    about: string,
-    age: number,
-    profession: string,
-    location: string
-}
-
-export default function UserPage({ params }: UserPageParams) {
+export default function UserPage({ params }: PropsType) {
 
     const [userDetails, setUserDetails] = useState<UserDetailsType | undefined>();
 
@@ -50,7 +37,7 @@ export default function UserPage({ params }: UserPageParams) {
                     <div className='text-center font-dmsans text-xl mb-6'>Profile</div>
                     <div className='flex items-center mb-10'>
                         <div className='mr-8'>
-                            <Avatar sx={{ width: 100, height: 100, backgroundColor: "black" }} src={userDetails?.image}>{userDetails?.name.split(" ").map((name: string) => name[0])}</Avatar>
+                            <Avatar sx={{ width: 100, height: 100 }} src={userDetails?.image}>{userDetails?.name.split(" ").map((name: string) => name[0])}</Avatar>
                         </div>
                         <div>
                             <div className="text-5xl font-bold font-dmsans">

@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { getDataFromToken } from './lib/helpers/getDataFromToken';
 
 const PublicPath = ["/", "/login", "/create-account", "forgot-passowrd", "/resetpassword", "/verifyemail"];
-const ApiPath = ["/api/user/profile", "/api/interviews/getall", "/api/interviews/getdetails"];
+const ApiPath = ["/api/user/profile", "/api/interviews/getall", "/api/interviews/getone/:path*", "/api/interviews/book/:path*"];
 
 export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname
@@ -39,9 +39,10 @@ export const config = {
         '/login',
         '/resetpassword',
         '/verifyemail',
+        '/interview/:path*',
         '/api/user/profile',
         '/api/interviews/getall',
-        '/interview/:path*',
-        '/api/interviews/getdetails'
+        '/api/interviews/getone/:path*',
+        '/api/interviews/book/:path*'
     ],
 }

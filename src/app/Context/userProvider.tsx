@@ -13,7 +13,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 const res = await fetch("/api/user/profile");
                 const data = await res.json();
                 if (data.success) {
-                    setUser(data);
+                    setUser(data.data);
                 }
             } catch (error: any) {
                 console.log(error.message)

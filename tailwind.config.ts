@@ -7,8 +7,8 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    fontFamily:{
-      'dmsans':['DM Sans','sans-serif']
+    fontFamily: {
+      'dmsans': ['DM Sans', 'sans-serif']
     },
     extend: {
       backgroundImage: {

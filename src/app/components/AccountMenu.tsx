@@ -5,10 +5,8 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import toast from 'react-hot-toast';
@@ -54,7 +52,7 @@ export default function AccountMenu() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 40, height: 40, backgroundColor: "black" }} src={user?.data.image}>{user?.data.name.split(" ").map((name: string) => name[0])}</Avatar>
+                        <Avatar sx={{ width: 40, height: 40, backgroundColor: "black" }} src={user?.image}>{user?.name.split(" ").map((name: string) => name[0])}</Avatar>
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -93,9 +91,9 @@ export default function AccountMenu() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <Link href={user !== undefined ? `/profile/${user?.data._id}` : "/home"}>
+                <Link href={user !== undefined ? `/profile/${user?._id}` : "/home"}>
                     <MenuItem onClick={handleClose}>
-                        <Avatar sx={{ width: 40, height: 40, backgroundColor: "black" }} src={user?.data.image} >{user?.data.name.split(" ").map((name: string) => name[0])}</Avatar> My Profile
+                        <Avatar sx={{ width: 40, height: 40, backgroundColor: "black" }} src={user?.image} >{user?.name.split(" ").map((name: string) => name[0])}</Avatar> My Profile
                     </MenuItem>
                 </Link>
                 <Link href="/settings">

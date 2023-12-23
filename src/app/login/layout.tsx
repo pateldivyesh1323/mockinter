@@ -5,7 +5,7 @@ type PropsType = {
 }
 
 export const metadata: Metadata = {
-  title: "Login-MockInter",
+  title: "Login | Mockinter",
   description: "Login to MockInter",
 };
 

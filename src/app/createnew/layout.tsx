@@ -6,11 +6,11 @@ type PropsType = {
 }
 
 export const metadata: Metadata = {
-    title: "Home Page | Mockinter",
-    description: "Welcome to homepage of MockInter",
+    title: "Create new interview | Mockinter",
+    description: "Create new interview",
 };
 
-export default function HomeLayout({ children }: PropsType) {
+export default function CreateNewLayout({ children }: PropsType) {
     return (
         <main>
             <NavbarTwo />

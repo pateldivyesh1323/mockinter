@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import ReactPasswordChecklist from "react-password-checklist";
 import { Types } from "mongoose";
 import { ButtonLoading } from "../components/ui/button-loading";
+import { Label } from "../components/ui/label";
+import { Input } from "../components/ui/input";
 
 type DataType = {
     name: string;
@@ -105,90 +107,82 @@ export default function CreateAccount(): React.ReactNode {
                     onSubmit={handleCreateAccountFormSubmit}
                     className="mt-7 flex flex-col"
                 >
-                    <div>
-                        <label htmlFor="name" className="form-label">
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            placeholder="Enter your Name"
-                            className="h-full w-[90%] outline-none form-input-field"
-                            value={name}
-                            onChange={(e) => {
-                                setName(e.target.value);
-                            }}
-                        />
+                    <div className="flex gap-2 flex-col">
+                        <div>
+                            <Label htmlFor="name">Name</Label>
+                            <Input
+                                type="text"
+                                name="name"
+                                id="name"
+                                placeholder="Enter your Name"
+                                value={name}
+                                onChange={(e) => {
+                                    setName(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder="Enter your Email"
+                                value={email}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                type="password"
+                                name="password"
+                                id="password"
+                                placeholder="Enter your Password"
+                                value={password}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="confirmpassword">
+                                Confirm password
+                            </Label>
+                            <Input
+                                type="password"
+                                name="confirmpassword"
+                                id="confirmpassword"
+                                placeholder="Confirm your password"
+                                value={confirmpassword}
+                                onChange={(e) => {
+                                    setConfirmpassword(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="mb-5">
+                            <ReactPasswordChecklist
+                                rules={[
+                                    "capital",
+                                    "match",
+                                    "specialChar",
+                                    "minLength",
+                                    "number",
+                                ]}
+                                minLength={8}
+                                value={password}
+                                valueAgain={confirmpassword}
+                                onChange={(isValid) => {
+                                    setIsValidPass(isValid);
+                                }}
+                            />
+                        </div>
+                        <ButtonLoading loading={loading} type="submit">
+                            Create Account
+                        </ButtonLoading>
                     </div>
-                    <div>
-                        <label htmlFor="email" className="form-label">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            placeholder="Enter your Email"
-                            className="h-full w-[90%] outline-none form-input-field"
-                            value={email}
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                            }}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="password" className="form-label">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="Enter your Password"
-                            className="h-full w-[90%] outline-none form-input-field"
-                            value={password}
-                            onChange={(e) => {
-                                setPassword(e.target.value);
-                            }}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="confirmpassword" className="form-label">
-                            Confirm password
-                        </label>
-                        <input
-                            type="password"
-                            name="confirmpassword"
-                            id="confirmpassword"
-                            placeholder="Confirm your password"
-                            className="h-full w-[90%] outline-none form-input-field"
-                            value={confirmpassword}
-                            onChange={(e) => {
-                                setConfirmpassword(e.target.value);
-                            }}
-                        />
-                    </div>
-                    <div className="mb-5">
-                        <ReactPasswordChecklist
-                            rules={[
-                                "capital",
-                                "match",
-                                "specialChar",
-                                "minLength",
-                                "number",
-                            ]}
-                            minLength={8}
-                            value={password}
-                            valueAgain={confirmpassword}
-                            onChange={(isValid) => {
-                                setIsValidPass(isValid);
-                            }}
-                        />
-                    </div>
-                    <ButtonLoading loading={loading} type="submit">
-                        Create Account
-                    </ButtonLoading>
                 </form>
                 <div className="text-sm mb-5 text-center mt-4">
                     <Link href="/login">Already have an account? Login</Link>

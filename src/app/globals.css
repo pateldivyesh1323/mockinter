@@ -4,29 +4,30 @@
 @tailwind utilities;
 
 body {
-  background-color: #e7e5e4;
-  font-family: sans-serif;
+    background-color: #e7e5e4;
+    font-family: sans-serif;
 }
 
 /* Login and Signup form */
 .form-input-field {
-  border: 2px solid #d4d4d8;
-  margin-bottom: 15px;
-  height: 37px;
-  border-radius: 5px;
-  padding-left: 15px;
-  font-size: medium;
-  outline: none;
+    border: 2px solid #d4d4d8;
+    margin-bottom: 15px;
+    height: 37px;
+    border-radius: 5px;
+    padding-left: 15px;
+    font-size: medium;
+    outline: none;
+    width: 100%;
 }
 .form-input-field::placeholder {
-  color: #666666;
+    color: #666666;
 }
 .form-label {
-  font-size: medium;
-  font-weight: 600;
+    font-size: medium;
+    font-weight: 600;
 }
 @layer base {
-  :root {
-    --radius: 0.5rem;
-  }
+    :root {
+        --radius: 0.5rem;
+    }
 }

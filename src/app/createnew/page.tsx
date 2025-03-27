@@ -4,7 +4,7 @@ import { LoadingButton } from "@mui/lab";
 import { TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 export default function CreateNewPage() {
     const router = useRouter();

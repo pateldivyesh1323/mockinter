@@ -1,23 +1,24 @@
 "use client";
-import "./styles.css";
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ButtonLoading } from "../components/ui/button-loading";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/input";
+import { ButtonLoading } from "@/src/app/components/ui/button-loading";
+import { Label } from "@/src/app/components/ui/label";
+import { Input } from "@/src/app/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Button } from "@/src/app/components/ui/button";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "../components/ui/card";
+} from "@/src/app/components/ui/card";
 import { toast } from "sonner";
+import { useAuth } from "@/srcapp/Context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage(): React.ReactNode {
+    const { loginMutation, isLoginLoading } = useAuth();
     const router = useRouter();
 
     const [formData, setFormData] = useState({
@@ -25,7 +26,6 @@ export default function LoginPage(): React.ReactNode {
         password: "",
     });
     const [hidePassword, setHidePassword] = useState<boolean>(true);
-    const [loading, setLoading] = useState<boolean>(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
@@ -41,27 +41,10 @@ export default function LoginPage(): React.ReactNode {
                 toast.error("Please provide all credentials!");
                 return;
             }
-            setLoading(true);
-            let res = await fetch("/api/user/login", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            let data = await res.json();
-
-            if (!data.success) {
-                toast.error(data.message);
-                return;
-            }
-            toast.success(data.message);
+            loginMutation(formData);
             router.push("/home");
         } catch (error: any) {
             toast.error(error.message);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -169,7 +152,7 @@ export default function LoginPage(): React.ReactNode {
                                     </div>
                                 </div>
                                 <ButtonLoading
-                                    loading={loading}
+                                    loading={isLoginLoading}
                                     type="submit"
                                     className="w-full"
                                 >

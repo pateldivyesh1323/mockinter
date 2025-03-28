@@ -5,9 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
 
-export async function POST(req: NextRequest, route: { params: { id: string } }) {
+export async function POST(req: NextRequest) {
     try {
-        const interviewID = route.params.id;
+        const interviewID = req.nextUrl.pathname.split("/").pop();
+
         let intervieweeID: string = req.headers.get("id") as string;
         console.log("ID : ", intervieweeID);
         let id = new mongoose.Types.ObjectId(intervieweeID);
@@ -25,9 +26,14 @@ export async function POST(req: NextRequest, route: { params: { id: string } }) 
 
         // console.log(updatedInterview)
         // , data: updatedInterview
-        return NextResponse.json({ success: true, message: "Successfully booked interview!" }, { status: 200 })
-
+        return NextResponse.json(
+            { success: true, message: "Successfully booked interview!" },
+            { status: 200 }
+        );
     } catch (error: any) {
-        return NextResponse.json({ success: false, message: error.message }, { status: 500 })
+        return NextResponse.json(
+            { success: false, message: error.message },
+            { status: 500 }
+        );
     }
 }

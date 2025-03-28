@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
+import { ROLES } from "@/src/constants";
 
 const userSchema = new Schema(
     {
@@ -25,11 +26,31 @@ const userSchema = new Schema(
         },
         role: {
             type: String,
-            enum: ["INTERVIEWEE", "INTERVIEWER", "BOTH"],
+            enum: ROLES,
             default: "INTERVIEWEE",
         },
-        age: {
-            type: Number,
+        dateOfBirth: {
+            type: Date,
+            required: true,
+            validate: {
+                validator: function (value: Date) {
+                    const today = new Date();
+                    const birthDate = new Date(value);
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+                    if (
+                        monthDiff < 0 ||
+                        (monthDiff === 0 &&
+                            today.getDate() < birthDate.getDate())
+                    ) {
+                        age--;
+                    }
+
+                    return age >= 10 && age <= 100;
+                },
+                message: "Age must be between 10 and 100",
+            },
         },
         about: {
             type: String,
@@ -46,10 +67,28 @@ const userSchema = new Schema(
             type: [String],
             default: [],
         },
-        experience: {
-            type: Number,
-            default: 0,
-        },
+        experience: [
+            {
+                title: {
+                    type: String,
+                    required: true,
+                },
+                description: {
+                    type: String,
+                },
+                startDate: {
+                    type: Date,
+                    required: true,
+                },
+                endDate: {
+                    type: Date,
+                },
+                isCurrentlyWorking: {
+                    type: Boolean,
+                    default: false,
+                },
+            },
+        ],
         rating: {
             type: Number,
             default: 0,

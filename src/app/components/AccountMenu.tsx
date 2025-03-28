@@ -11,13 +11,13 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { UserState } from "../Context/userProvider";
+import { useAuth } from "../Context/AuthContext";
 import Link from "next/link";
 
 export default function AccountMenu() {
     const router = useRouter();
 
-    const user = UserState();
+    const { user } = useAuth();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);

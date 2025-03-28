@@ -1,8 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import UserProvider from "./Context/userProvider";
-import { Toaster } from "./components/ui/sonner";
-
+import { Providers } from "./providers";
 export const metadata: Metadata = {
     title: "MockInter",
     description: "Welcome to world of Interviews",
@@ -22,10 +20,7 @@ export default function RootLayout({
                 />
             </head>
             <body>
-                <UserProvider>
-                    <Toaster />
-                    {children}
-                </UserProvider>
+                <Providers>{children}</Providers>
             </body>
         </html>
     );

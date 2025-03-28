@@ -1,3 +1,8 @@
-.userdetailsfield{
-    @apply text-lg font-semibold text-neutral-700
+@import "tailwindcss";
+
+@theme {
+}
+
+.userdetailsfield {
+    @apply text-lg font-semibold text-neutral-700;
 }

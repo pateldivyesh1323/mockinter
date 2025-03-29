@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import NavbarTwo from "../components/NavbarTwo";
-
+import BasicLayoutWithNavbar from "../components/layouts/BasicLayoutWithNavbar";
 type PropsType = {
-    children: React.ReactNode
-}
+    children: React.ReactNode;
+};
 
 export const metadata: Metadata = {
     title: "Home Page | Mockinter",
@@ -11,10 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomeLayout({ children }: PropsType) {
-    return (
-        <main>
-            <NavbarTwo />
-            {children}
-        </main>
-    )
+    return <BasicLayoutWithNavbar>{children}</BasicLayoutWithNavbar>;
 }

@@ -1,6 +1,7 @@
 import User from "@/srclib/database/models/UserModel";
 import { connectDB } from "@/srclib/database/mongodb";
 import generateToken from "@/srclib/helpers/generateToken";
+import { AUTH_TOKEN_KEY } from "@/src/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
@@ -22,16 +23,22 @@ export async function POST(req: NextRequest) {
         if (user && (await user.matchPassword(password))) {
             let { _id } = user;
             const token = await generateToken(_id);
-            return NextResponse.json(
+            const response = NextResponse.json(
                 {
                     success: true,
                     message: "Login Successful",
-                    data: { token },
                 },
-                {
-                    status: 201,
-                }
+                { status: 200 }
             );
+
+            response.cookies.set(AUTH_TOKEN_KEY, token, {
+                maxAge: 30 * 24 * 60 * 60,
+                path: "/",
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+            });
+
+            return response;
         } else {
             return NextResponse.json(
                 { success: false, message: "Credentials does not match!" },

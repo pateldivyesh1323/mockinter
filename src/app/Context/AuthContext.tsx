@@ -20,6 +20,7 @@ import { SignUpDataInterface, UserInterface } from "@/src/types/user";
 import { useRouter } from "next/navigation";
 import { apiClient } from "../query/apiClient";
 import { toast } from "sonner";
+import { parseCookies, setCookie, destroyCookie } from "nookies";
 
 type PropsType = {
     children: ReactNode;
@@ -40,21 +41,10 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 const getStoredAccessToken = () => {
     if (typeof window !== "undefined") {
-        return localStorage.getItem(AUTH_TOKEN_KEY);
+        const cookies = parseCookies();
+        return cookies[AUTH_TOKEN_KEY] || null;
     }
     return null;
-};
-
-const setStoredAccessToken = (token: string) => {
-    if (typeof window !== "undefined") {
-        localStorage.setItem(AUTH_TOKEN_KEY, token);
-    }
-};
-
-const removeStoredAccessToken = () => {
-    if (typeof window !== "undefined") {
-        localStorage.removeItem(AUTH_TOKEN_KEY);
-    }
 };
 
 export const AuthProvider = ({ children }: PropsType) => {
@@ -90,7 +80,7 @@ export const AuthProvider = ({ children }: PropsType) => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            // getUser();
+            getUser();
         }
     }, [isAuthenticated, getUser]);
 
@@ -101,7 +91,6 @@ export const AuthProvider = ({ children }: PropsType) => {
             handleError(error);
         },
         onSuccess(data) {
-            setStoredAccessToken(data.data.token);
             setIsAuthenticated(true);
             toast.success(data.message);
             router.push("/home");
@@ -115,7 +104,6 @@ export const AuthProvider = ({ children }: PropsType) => {
             handleError(error);
         },
         onSuccess(data) {
-            setStoredAccessToken(data.data.token);
             setIsAuthenticated(true);
             toast.success(data.message);
             router.push("/home");
@@ -123,8 +111,9 @@ export const AuthProvider = ({ children }: PropsType) => {
     });
 
     const logout = () => {
-        removeStoredAccessToken();
+        destroyCookie(null, AUTH_TOKEN_KEY, { path: "/" });
         setIsAuthenticated(false);
+        toast.success("Logged out successfully");
         router.push("/");
     };
 
@@ -152,4 +141,4 @@ export const useAuth = () => {
     return context;
 };
 
-export { getStoredAccessToken, setStoredAccessToken, removeStoredAccessToken };
+export { getStoredAccessToken };

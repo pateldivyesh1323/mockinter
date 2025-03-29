@@ -5,7 +5,7 @@ export async function handleApiRoute(req: NextRequest): Promise<NextResponse> {
     try {
         const id = (await getDataFromToken(req)) as string;
         const headers = new Headers(req.headers);
-        headers.set("id", id);
+        headers.set("userId", id);
         return NextResponse.next({ request: { headers } });
     } catch (error) {
         return NextResponse.json(
@@ -19,9 +19,9 @@ export function handlePublicRoute(
     req: NextRequest,
     token: string
 ): NextResponse | null {
-    if (token) {
-        return NextResponse.redirect(new URL("/home", req.nextUrl));
-    }
+    // if (token) {
+    //     return NextResponse.redirect(new URL("/home", req.nextUrl));
+    // }
     return null;
 }
 

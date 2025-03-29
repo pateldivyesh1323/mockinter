@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import User from "@/srclib/database/models/UserModel";
 import { connectDB } from "@/srclib/database/mongodb";
 import generateToken from "@/srclib/helpers/generateToken";
-import { ROLES } from "@/srcconstants";
+import { AUTH_TOKEN_KEY, ROLES } from "@/srcconstants";
 
 connectDB();
 
@@ -70,14 +70,23 @@ export async function POST(req: NextRequest) {
 
         if (user) {
             const token = await generateToken(user._id);
-            return NextResponse.json(
+
+            const response = NextResponse.json(
                 {
                     success: true,
                     message: "Created new account successfully!",
-                    data: { token },
                 },
                 { status: 200 }
             );
+
+            response.cookies.set(AUTH_TOKEN_KEY, token, {
+                maxAge: 30 * 24 * 60 * 60,
+                path: "/",
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+            });
+
+            return response;
         } else {
             return NextResponse.json(
                 { success: false, message: "Something went wrong!" },

@@ -1,12 +1,11 @@
 import React from "react";
-import NavbarOne from "./components/NavbarOne";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardFooter } from "./components/ui/card";
+import BasicLayoutWithNavbar from "./components/layouts/BasicLayoutWithNavbar";
 
 export default function Home(): React.ReactNode {
     return (
-        <>
-            <NavbarOne />
+        <BasicLayoutWithNavbar>
             <main className="px-4 md:px-8 py-10 max-w-7xl mx-auto">
                 {/* Hero Section */}
                 <section className="py-8 md:py-16 text-center space-y-6">
@@ -103,6 +102,6 @@ export default function Home(): React.ReactNode {
                     </div>
                 </section>
             </main>
-        </>
+        </BasicLayoutWithNavbar>
     );
 }

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import InterviewList from "../components/InterviewList";
-
+import BasicLayoutWithNavbar from "../components/layouts/BasicLayoutWithNavbar";
 export default function HomePage() {
     const [interviews, setInterviews] = useState([]);
 
@@ -19,14 +19,5 @@ export default function HomePage() {
         getAll();
     }, []);
 
-    return (
-        <>
-            <main>
-                <InterviewList
-                    title={"Available Interviews"}
-                    data={interviews}
-                />
-            </main>
-        </>
-    );
+    return <InterviewList title={"Available Interviews"} data={interviews} />;
 }

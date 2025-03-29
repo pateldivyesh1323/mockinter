@@ -10,8 +10,7 @@ import { AUTH_TOKEN_KEY } from "./constants";
 
 export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
-    const token = req.headers.get(AUTH_TOKEN_KEY) || "";
-
+    const token = req.cookies.get(AUTH_TOKEN_KEY)?.value || "";
     if (isMatchingRoute(path, routeConfig.api)) {
         return handleApiRoute(req);
     }
@@ -30,13 +29,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        /*  Match all request paths except for the ones starting with:
-            - api (API routes)
-            - _next/static (static files)
-            - _next/image (image optimization files)
-            - favicon.ico (favicon file)
-        */
-        "/((?!api|_next/static|_next/image|favicon.ico).*)",
-    ],
+    matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

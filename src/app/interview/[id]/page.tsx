@@ -1,5 +1,4 @@
 "use client";
-import NavbarTwo from "@/srcapp/components/NavbarTwo";
 import { LoadingButton } from "@mui/lab";
 import { Avatar, Button } from "@mui/material";
 import Link from "next/link";
@@ -93,7 +92,6 @@ export default function InterviewPage({ params }: InterviewPageProps) {
 
     return (
         <>
-            <NavbarTwo />
             {interviewDetails && (
                 <section className="w-[80%] m-auto">
                     <div className="font-dmsans font-bold text-2xl">

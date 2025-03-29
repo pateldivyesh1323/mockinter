@@ -1,15 +1,14 @@
 "use client";
 import React from "react";
-import NavbarTwo from "../components/NavbarTwo";
 import { Avatar } from "@mui/material";
 import { useAuth } from "../Context/AuthContext";
+import BasicLayoutWithNavbar from "../components/layouts/BasicLayoutWithNavbar";
 
 export default function SettingsPage(): React.ReactNode {
     const { user } = useAuth();
 
     return (
-        <>
-            <NavbarTwo />
+        <BasicLayoutWithNavbar>
             {user && (
                 <section>
                     <div className="bg-white m-auto w-[800px] p-4 px-8">
@@ -40,6 +39,6 @@ export default function SettingsPage(): React.ReactNode {
                     </div>
                 </section>
             )}
-        </>
+        </BasicLayoutWithNavbar>
     );
 }

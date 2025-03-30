@@ -56,6 +56,7 @@ export default function AccountMenu() {
                                     <Button
                                         variant="ghost"
                                         className="w-full justify-start flex items-center text-sm"
+                                        onClick={action.onClick}
                                     >
                                         <action.icon className="mr-2 h-4 w-4" />
                                         {action.label}

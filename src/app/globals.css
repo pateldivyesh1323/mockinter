@@ -47,7 +47,7 @@
 
 body {
     background-color: white;
-    font-family: sans-serif;
+    font-family: var(--font-dmsans);
 }
 
 /*

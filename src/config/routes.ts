@@ -17,11 +17,15 @@ export const API_ROUTES = {
         BOOK: "/api/interviews/book/:path*",
         CREATE_NEW: "/api/interviews/createnew",
     },
+    INTERVIEWERS: {
+        GET_ALL: "/api/interviewers/getall",
+    },
 } as const;
 
 export const PROTECTED_ROUTES = {
     HOME: "/home",
     INTERVIEW: "/interview/:path*",
+    INTERVIEWERS: "/interviewers",
 } as const;
 
 function flattenRoutes(routes: Record<string, any>): string[] {

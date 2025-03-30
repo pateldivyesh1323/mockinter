@@ -6,13 +6,17 @@ connectDB();
 export async function GET(req: NextRequest) {
     try {
         let userId = req.nextUrl.searchParams.get("searchid");
-        if (userId === null) userId = req.headers.get("userId");
+        let isOwner = false;
+        if (userId === null) {
+            userId = req.headers.get("userId");
+            isOwner = true;
+        }
 
         const userData = await User.findById(userId).select([
             "_id",
             "name",
             "image",
-            "email",
+            ...(isOwner ? ["email"] : []),
             "role",
             "dateOfBirth",
             "about",
@@ -24,6 +28,7 @@ export async function GET(req: NextRequest) {
             "createdAt",
             "isVerified",
         ]);
+
         if (userData !== null) {
             return NextResponse.json(
                 {

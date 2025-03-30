@@ -10,3 +10,8 @@ export const login = async (loginData: { email: string; password: string }) => {
     const { data } = await apiClient.post("/api/user/login", loginData);
     return data;
 };
+
+export const getUser = async (queryKey: any) => {
+    const { data } = await apiClient.get(`/api/user/profile?${queryKey}`);
+    return data;
+};

@@ -89,10 +89,25 @@ const userSchema = new Schema(
                 },
             },
         ],
-        rating: {
-            type: Number,
-            default: 0,
-        },
+        rating: [
+            {
+                user: {
+                    type: Schema.Types.ObjectId,
+                    ref: "User",
+                    required: true,
+                },
+                value: {
+                    type: Number,
+                    min: 0,
+                    max: 5,
+                    required: true,
+                },
+                message: {
+                    type: String,
+                    trim: true,
+                },
+            },
+        ],
         interviewRequests: [
             {
                 type: Schema.Types.ObjectId,

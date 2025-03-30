@@ -8,7 +8,7 @@ interface NavbarLayoutProps {
 
 export default function NavbarLayout({ children }: NavbarLayoutProps) {
     return (
-        <div className="min-h-screen flex flex-col bg-background">
+        <div className="min-h-[80vh] flex flex-col bg-background">
             <Navbar />
             <main className="flex-grow container mx-auto px-4 py-6">
                 {children}

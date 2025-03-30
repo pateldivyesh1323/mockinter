@@ -6,21 +6,20 @@ import {
     ReactNode,
     useEffect,
     useState,
-    useCallback,
 } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { handleError } from "@/src/lib/helpers/errorHandler";
-import { login, signUp } from "@/src/app/query/authentication";
+import { getUser, login, signUp } from "@/src/app/query/authentication";
 import {
     AUTH_TOKEN_KEY,
     LOGIN_MUTATION_KEY,
     SIGN_UP_MUTATION_KEY,
+    GET_USER_MUTATION_KEY,
 } from "@/src/constants";
 import { SignUpDataInterface, UserInterface } from "@/src/types/user";
 import { useRouter } from "next/navigation";
-import { apiClient } from "../query/apiClient";
+import { parseCookies, destroyCookie } from "nookies";
 import { toast } from "sonner";
-import { parseCookies, setCookie, destroyCookie } from "nookies";
 
 type PropsType = {
     children: ReactNode;
@@ -34,6 +33,7 @@ interface AuthContextType {
     user: UserInterface | undefined;
     loginMutation: (data: { email: string; password: string }) => void;
     isLoginLoading: boolean;
+    isUserLoading: boolean;
     logout: () => void;
 }
 
@@ -60,29 +60,23 @@ export const AuthProvider = ({ children }: PropsType) => {
         setIsAuthLoading(true);
         if (token) {
             setIsAuthenticated(true);
+            getUserMutation(null, {});
         } else {
             setIsAuthenticated(false);
         }
         setIsAuthLoading(false);
     }, [token]);
 
-    const getUser = useCallback(async () => {
-        try {
-            const res = await apiClient.get("/api/user/profile");
-            const data = res.data;
-            if (data.success) {
-                setUser(data.data);
-            }
-        } catch (error: any) {
-            console.log(error.message);
-        }
-    }, [token]);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            getUser();
-        }
-    }, [isAuthenticated, getUser]);
+    const { mutate: getUserMutation, isPending: isUserLoading } = useMutation({
+        mutationKey: [GET_USER_MUTATION_KEY, token],
+        mutationFn: getUser,
+        onSuccess(data) {
+            setUser(data.data);
+        },
+        onError: (error) => {
+            handleError(error);
+        },
+    });
 
     const { mutate: signUpMutation, isPending: isSignUpLoading } = useMutation({
         mutationKey: [SIGN_UP_MUTATION_KEY],
@@ -113,6 +107,7 @@ export const AuthProvider = ({ children }: PropsType) => {
     const logout = () => {
         destroyCookie(null, AUTH_TOKEN_KEY, { path: "/" });
         setIsAuthenticated(false);
+        setUser(undefined);
         toast.success("Logged out successfully");
         router.push("/");
     };
@@ -124,7 +119,8 @@ export const AuthProvider = ({ children }: PropsType) => {
         isLoginLoading,
         isAuthLoading,
         isAuthenticated,
-        user: user,
+        user,
+        isUserLoading,
         logout,
     };
 

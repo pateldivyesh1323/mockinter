@@ -61,7 +61,7 @@ export default function UserPage() {
             setUserDetails(user);
             setIsOwner(true);
         } else {
-            getOtherUserMutation(null, {});
+            getOtherUserMutation(`searchid=${id}`);
         }
     }, [id, user, isUserLoading, getOtherUserMutation]);
 
@@ -100,7 +100,10 @@ export default function UserPage() {
                             <div className="mt-4 md:mt-0 md:ml-6 pb-2">
                                 <div className="flex flex-col md:flex-row md:items-center gap-2">
                                     <h1 className="text-3xl font-bold">
-                                        {userDetails?.name}
+                                        {userDetails?.name}{" "}
+                                        <span className="text-xl text-gray-500 font-normal">
+                                            ({userDetails?.username})
+                                        </span>
                                     </h1>
                                     {userDetails?.isVerified && (
                                         <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">

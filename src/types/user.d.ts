@@ -32,6 +32,7 @@ interface UserInterface {
     image: string;
     isVerified: boolean;
     name: string;
+    username: string;
     _id: ObjectId;
     about: string;
     age: number;

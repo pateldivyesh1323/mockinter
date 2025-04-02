@@ -5,6 +5,14 @@ import { ROLES } from "@/src/constants";
 
 const userSchema = new Schema(
     {
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true,
+            minlength: [6, "Username must be at least 6 characters long"],
+            maxlength: [30, "Username must be less than 30 characters"],
+        },
         name: {
             type: String,
             required: true,

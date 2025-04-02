@@ -15,3 +15,10 @@ export const getUser = async (queryKey: any) => {
     const { data } = await apiClient.get(`/api/user/profile?${queryKey}`);
     return data;
 };
+
+export const checkUsername = async (username: string) => {
+    const { data } = await apiClient.post("/api/user/username/exists", {
+        username,
+    });
+    return data;
+};

@@ -34,11 +34,16 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useAuth } from "@/srcapp/Context/AuthContext";
 import { ButtonLoading } from "@/src/app/components/ui/button-loading";
+import { useDebouncedCallback } from "use-debounce";
+import { useMutation } from "@tanstack/react-query";
+import { checkUsername } from "@/src/app/query/authentication";
+import { CHECK_USERNAME_MUTATION_KEY } from "@/src/constants";
 
 export default function CreateAccount(): React.ReactNode {
     const { signUpMutation, isSignUpLoading } = useAuth();
 
     const [formData, setFormData] = useState({
+        username: "",
         name: "",
         email: "",
         password: "",
@@ -59,15 +64,19 @@ export default function CreateAccount(): React.ReactNode {
             },
         ],
     });
-
+    const [usernameExists, setUsernameExists] = useState<boolean>(false);
     const [isValidPass, setIsValidPass] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
     const [passwordValidation, setPasswordValidation] = useState({
         hasLength: false,
         hasNumber: false,
         hasSpecial: false,
         hasCapital: false,
         matches: false,
+    });
+    const [usernameValidation, setUsernameValidation] = useState({
+        hasLength: false,
+        hasNoSpaces: false,
+        hasNoSpecialChars: false,
     });
 
     const [step, setStep] = useState(1);
@@ -88,7 +97,8 @@ export default function CreateAccount(): React.ReactNode {
                 !formData.name ||
                 !formData.email ||
                 !formData.password ||
-                !formData.confirmpassword
+                !formData.confirmpassword ||
+                !formData.username
             ) {
                 toast.error("Please provide all required credentials!");
                 return;
@@ -125,6 +135,15 @@ export default function CreateAccount(): React.ReactNode {
         setIsValidPass(Object.values(validation).every(Boolean));
     };
 
+    const validateUsername = (username: string) => {
+        const validation = {
+            hasLength: username.length >= 6 && username.length <= 30,
+            hasNoSpaces: !/\s/.test(username),
+            hasNoSpecialChars: /^[a-zA-Z0-9_]+$/.test(username),
+        };
+        setUsernameValidation(validation);
+    };
+
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -134,6 +153,11 @@ export default function CreateAccount(): React.ReactNode {
                 ...prev,
                 [name]: value,
             };
+
+            if (name === "username") {
+                validateUsername(value);
+                debouncedCheckUsername(value);
+            }
 
             if (name === "password" || name === "confirmpassword") {
                 validatePassword(
@@ -165,10 +189,38 @@ export default function CreateAccount(): React.ReactNode {
         </div>
     );
 
+    const UsernameRequirement = ({
+        met,
+        text,
+    }: {
+        met: boolean;
+        text: string;
+    }) => (
+        <div className="flex items-center gap-2 text-sm">
+            {met ? (
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+            ) : (
+                <XCircle className="h-4 w-4 text-red-500" />
+            )}
+            <span className={met ? "text-green-500" : "text-red-500"}>
+                {text}
+            </span>
+        </div>
+    );
+
     const nextStep = () => {
         if (step === 1) {
-            if (!formData.name || !formData.email || !formData.role) {
+            if (
+                !formData.name ||
+                !formData.email ||
+                !formData.role ||
+                !formData.username
+            ) {
                 toast.error("Please fill in all required fields");
+                return;
+            }
+            if (usernameExists) {
+                toast.error("Username already exists");
                 return;
             }
         }
@@ -210,6 +262,28 @@ export default function CreateAccount(): React.ReactNode {
         </div>
     );
 
+    const { mutate: checkUserNameMutation, isPending: isCheckUserNameLoading } =
+        useMutation({
+            mutationKey: [CHECK_USERNAME_MUTATION_KEY, formData.username],
+            mutationFn: checkUsername,
+            onSuccess: (data) => {
+                setUsernameExists(data.data.exists);
+            },
+            onError: (error) => {
+                toast.error("Error : " + error.message);
+            },
+        });
+
+    const debouncedCheckUsername = useDebouncedCallback(
+        (value: string) => {
+            if (value.length > 0) {
+                checkUserNameMutation(value);
+            }
+        },
+        500,
+        { leading: false, trailing: true }
+    );
+
     const renderStepContent = () => {
         switch (step) {
             case 1:
@@ -222,6 +296,49 @@ export default function CreateAccount(): React.ReactNode {
                         <CardDescription className="text-center mb-6">
                             Let's start with the basics
                         </CardDescription>
+                        <div>
+                            <Label htmlFor="username">Username *</Label>
+                            <Input
+                                required
+                                type="text"
+                                name="username"
+                                id="username"
+                                placeholder="Enter your username"
+                                value={formData.username}
+                                onChange={(e) => {
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        username: e.target.value,
+                                    }));
+                                    validateUsername(e.target.value);
+                                    debouncedCheckUsername(e.target.value);
+                                }}
+                            />
+                            {formData.username && (
+                                <div className="grid grid-cols-1 gap-2 mt-2">
+                                    <UsernameRequirement
+                                        met={usernameValidation.hasLength}
+                                        text="6 to 30 characters"
+                                    />
+                                    <UsernameRequirement
+                                        met={usernameValidation.hasNoSpaces}
+                                        text="No spaces"
+                                    />
+                                    <UsernameRequirement
+                                        met={
+                                            usernameValidation.hasNoSpecialChars
+                                        }
+                                        text="Only letters, numbers, and underscores"
+                                    />
+                                </div>
+                            )}
+                            {usernameExists && (
+                                <div className="text-red-600 text-sm mt-1">
+                                    Username already exists. Please choose a
+                                    different username.
+                                </div>
+                            )}
+                        </div>
                         <div>
                             <Label htmlFor="name">Name *</Label>
                             <Input
@@ -811,7 +928,7 @@ export default function CreateAccount(): React.ReactNode {
                     </blockquote>
                 </div>
             </div>
-            <div className="lg:p-8">
+            <div>
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px]">
                     <Card className="border-none shadow-none">
                         <CardHeader className="space-y-1">

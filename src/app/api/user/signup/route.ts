@@ -9,6 +9,7 @@ connectDB();
 export async function POST(req: NextRequest) {
     try {
         const {
+            username,
             name,
             password,
             email,
@@ -22,6 +23,7 @@ export async function POST(req: NextRequest) {
         } = await req.json();
 
         if (
+            !username ||
             !name ||
             !password ||
             !email ||
@@ -45,17 +47,25 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        if (await User.exists({ email })) {
+        const existingUser = await User.findOne({
+            $or: [{ username }, { email }],
+        });
+
+        if (existingUser) {
             return NextResponse.json(
                 {
                     success: false,
-                    message: "User already exists please login!",
+                    message:
+                        existingUser.username === username
+                            ? "Username already exists"
+                            : "Email already exists",
                 },
                 { status: 409 }
             );
         }
 
         let user = await User.create({
+            username,
             name,
             password,
             email,

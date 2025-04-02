@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
 
         const userData = await User.findById(userId).select([
             "_id",
+            "username",
             "name",
             "image",
             ...(isOwner ? ["email"] : []),

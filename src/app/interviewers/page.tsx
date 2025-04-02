@@ -18,21 +18,30 @@ import {
 } from "@/src/app/components/ui/pagination";
 import { Skeleton } from "@/src/app/components/ui/skeleton";
 import { Input } from "@/src/app/components/ui/input";
+import { useDebounce } from "use-debounce";
+import { AlertTriangle } from "lucide-react";
 
 export default function InterviewersPage() {
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [search, setSearch] = useState("");
 
+    const [debouncedSearch] = useDebounce(search, 500);
+
     const { data: interviewers, isLoading: isInterviewersLoading } = useQuery({
-        queryKey: [GET_INTERVIEWERS_MUTATION_KEY, page, limit, search],
-        queryFn: getInterviewers,
+        queryKey: [GET_INTERVIEWERS_MUTATION_KEY, page, limit, debouncedSearch],
+        queryFn: () =>
+            getInterviewers(
+                `?page=${page}&limit=${limit}&search=${debouncedSearch}`
+            ),
         enabled: isAuthenticated,
+        staleTime: 1000 * 60 * 5,
     });
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(e.target.value);
+        const value = e.target.value;
+        setSearch(value);
     };
 
     const handlePageChange = (newPage: number) => {
@@ -72,20 +81,32 @@ export default function InterviewersPage() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                            {interviewers?.data?.interviewers?.map(
-                                (interviewer: UserInterface) => (
-                                    <div
-                                        key={interviewer._id.toString()}
-                                        className="w-full"
-                                    >
-                                        <InterviewerCard
-                                            interviewer={interviewer}
-                                        />
-                                    </div>
+                            {interviewers?.data?.interviewers &&
+                            interviewers?.data?.interviewers?.length > 0 ? (
+                                interviewers?.data?.interviewers?.map(
+                                    (interviewer: UserInterface) => (
+                                        <div
+                                            key={interviewer._id.toString()}
+                                            className="w-full"
+                                        >
+                                            <InterviewerCard
+                                                interviewer={interviewer}
+                                            />
+                                        </div>
+                                    )
                                 )
-                            ) || (
-                                <div className="col-span-3 text-center py-12 text-gray-500">
-                                    No interviewers found
+                            ) : (
+                                <div className="col-span-3 text-center py-12">
+                                    <div className="flex flex-col items-center space-y-4">
+                                        <AlertTriangle className="h-16 w-16 text-gray-400" />
+                                        <p className="text-xl text-gray-600">
+                                            No interviewers found
+                                        </p>
+                                        <p className="text-gray-500">
+                                            Try adjusting your search or check
+                                            back later.
+                                        </p>
+                                    </div>
                                 </div>
                             )}
                         </div>

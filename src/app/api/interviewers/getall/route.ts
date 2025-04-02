@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: "i" } },
+                { username: { $regex: search, $options: "i" } },
                 { email: { $regex: search, $options: "i" } },
             ];
         }

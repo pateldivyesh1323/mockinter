@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-
+import BasicLayoutWithNavbar from "../components/layouts/BasicLayoutWithNavbar";
 type PropsType = {
     children: React.ReactNode;
 };
@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function CreateNewLayout({ children }: PropsType) {
-    return <main>{children}</main>;
+    return <BasicLayoutWithNavbar>{children}</BasicLayoutWithNavbar>;
 }

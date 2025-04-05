@@ -20,7 +20,7 @@ export default function Navbar() {
     return (
         <nav className="border-b py-3 px-4 md:px-8 sticky top-0 bg-white/95 backdrop-blur-sm z-10">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                     <Link
                         href="/"
                         className="text-2xl font-bold hover:opacity-90 transition-opacity flex items-center gap-2 font-pacifico"
@@ -28,15 +28,26 @@ export default function Navbar() {
                         <span className="hidden sm:inline">Mockinter</span>
                     </Link>
                     {isAuthenticated && (
-                        <Link href="/interviewers">
-                            <Button
-                                variant="link"
-                                size="sm"
-                                className="font-medium"
-                            >
-                                Interviewers
-                            </Button>
-                        </Link>
+                        <>
+                            <Link href="/home">
+                                <Button
+                                    variant="link"
+                                    size="sm"
+                                    className="font-medium"
+                                >
+                                    Home
+                                </Button>
+                            </Link>
+                            <Link href="/interviewers">
+                                <Button
+                                    variant="link"
+                                    size="sm"
+                                    className="font-medium"
+                                >
+                                    Interviewers
+                                </Button>
+                            </Link>
+                        </>
                     )}
                 </div>
 

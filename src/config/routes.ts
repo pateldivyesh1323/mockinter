@@ -24,8 +24,12 @@ export const API_ROUTES = {
 
 export const PROTECTED_ROUTES = {
     HOME: "/home",
+    PROFILE: "/profile/:path*",
     INTERVIEW: "/interview/:path*",
     INTERVIEWERS: "/interviewers",
+    CREATE_INTERVIEW: "/create-interview",
+    INTERVIEW_DETAILS: "/interview/:path*",
+    SETTINGS: "/settings",
 } as const;
 
 function flattenRoutes(routes: Record<string, any>): string[] {

@@ -11,6 +11,7 @@ import { AUTH_TOKEN_KEY } from "./constants";
 export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
     const token = req.cookies.get(AUTH_TOKEN_KEY)?.value || "";
+
     if (isMatchingRoute(path, routeConfig.api)) {
         return handleApiRoute(req);
     }

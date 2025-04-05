@@ -1,0 +1,20 @@
+type InterviewDataType = {
+    _id: string;
+    title: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+    status: string;
+    price: number;
+    currency: string;
+    jobType: string;
+    experienceLevel: string;
+    duration: number;
+    timezone: string;
+    skillsToFocus: string[];
+    applicationDeadline: string;
+    preferredDate: [Date];
+    interviewee: UserInterface;
+    interviewer: UserInterface;
+    status: string;
+};

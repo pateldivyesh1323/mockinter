@@ -43,9 +43,9 @@ type DynamicRoutePattern = {
 function parseDynamicRoute(route: string): DynamicRoutePattern {
     const params: string[] = [];
     const pattern = route
-        .replace(/:(\w+)/g, (_, param) => {
+        .replace(/:(\w+)(\*)?/g, (_, param, wildcard) => {
             params.push(param);
-            return "([^/]+)";
+            return wildcard ? "(.*)" : "([^/]+)";
         })
         .replace(/\*/g, ".*");
 
@@ -57,14 +57,14 @@ function parseDynamicRoute(route: string): DynamicRoutePattern {
 
 export function isMatchingRoute(path: string, routes: string[]): boolean {
     return routes.some((route) => {
-        if (route.endsWith("*")) {
-            const baseRoute = route.slice(0, -1);
-            return path.startsWith(baseRoute);
-        }
-
         if (route.includes(":")) {
             const { pattern } = parseDynamicRoute(route);
             return pattern.test(path);
+        }
+
+        if (route.endsWith("*")) {
+            const baseRoute = route.slice(0, -1);
+            return path.startsWith(baseRoute);
         }
 
         return path === route;

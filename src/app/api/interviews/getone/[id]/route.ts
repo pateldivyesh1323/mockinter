@@ -7,7 +7,12 @@ connectDB();
 export async function GET(req: NextRequest): Promise<NextResponse> {
     try {
         const id = req.nextUrl.pathname.split("/").pop();
-        const interview = await Interview.findById(id);
+        const interview = await Interview.findById(id)
+            .select(
+                "title description status price currency jobType experienceLevel duration createdAt updatedAt interviewee preferredDate"
+            )
+            .populate("interviewee");
+
         if (interview !== null) {
             return NextResponse.json(
                 {

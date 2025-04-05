@@ -1,23 +1,23 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
+import React from "react";
 import InterviewList from "../components/InterviewList";
-import BasicLayoutWithNavbar from "../components/layouts/BasicLayoutWithNavbar";
+import { useQuery } from "@tanstack/react-query";
+import { getAllInterviews } from "../query/interview";
+import { GET_ALL_INTERVIEWS } from "@/srcconstants";
+
 export default function HomePage() {
-    const [interviews, setInterviews] = useState([]);
+    const { data, isLoading, error } = useQuery({
+        queryKey: [GET_ALL_INTERVIEWS],
+        queryFn: getAllInterviews,
+    });
 
-    useEffect(() => {
-        async function getAll() {
-            const res = await fetch("/api/interviews/getall");
-            const data = await res.json();
-            if (data.success) {
-                setInterviews(data.data);
-            } else {
-                toast.error(data.message);
-            }
-        }
-        getAll();
-    }, []);
-
-    return <InterviewList title={"Available Interviews"} data={interviews} />;
+    const interviews = data?.data;
+    return (
+        <InterviewList
+            title={"Available Interviews"}
+            data={interviews}
+            loading={isLoading}
+            error={error}
+        />
+    );
 }

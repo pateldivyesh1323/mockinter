@@ -1,7 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Avatar } from "@mui/material";
+import Pagination from "./customui/Pagination";
 import {
     CalendarIcon,
     ClockIcon,
@@ -19,6 +22,11 @@ type PropsType = {
     data: InterviewDataType[];
     loading: boolean;
     error: Error | null;
+    total: number;
+    page: number;
+    setPage: (page: number) => void;
+    limit: number;
+    setLimit: (limit: number) => void;
 };
 
 export default function InterviewList({
@@ -26,7 +34,23 @@ export default function InterviewList({
     data,
     loading,
     error,
+    total,
+    page,
+    setPage,
+    limit,
+    setLimit,
 }: PropsType): React.ReactNode {
+    const handlePageChange = (newPage: number) => {
+        setPage(newPage);
+    };
+
+    const handlePageSizeChange = (newPageSize: number) => {
+        setLimit(newPageSize);
+        setPage(1);
+    };
+
+    const pageSizeOptions = [5, 10, 25];
+
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
             case "pending":
@@ -100,7 +124,6 @@ export default function InterviewList({
         );
     };
 
-    // UI component parts
     const Header = () => (
         <>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between my-2">
@@ -278,6 +301,15 @@ export default function InterviewList({
             ) : (
                 <InterviewList />
             )}
+
+            <Pagination
+                currentPage={page}
+                totalItems={total}
+                pageSize={limit}
+                onPageChange={handlePageChange}
+                onPageSizeChange={handlePageSizeChange}
+                pageSizeOptions={pageSizeOptions}
+            />
         </section>
     );
 }
